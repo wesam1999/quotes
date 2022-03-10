@@ -4,22 +4,45 @@
 package quotes;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
-import java.io.File;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
 
 public class App {
 
 
-    public static void main(String[] args) {
+    public static <JSONObject, JSONArray> void main(String[] args) {
+        try {
+            // create Gson instance
+            Gson gson = new Gson();
 
-        Gson gson = new Gson();
-        File files=new File("jsonFile");
-//        for (file:
-//
-//              {
-//
-//        }
-//        Contain ahmadObj = gson.fromJson(String.valueOf(files), Contain.class);
+            // create a reader
+            Reader reader = Files.newBufferedReader(Paths.get("jsonFile.json"));
+
+            // convert JSON array to list of users
+            List<Contain> users = new Gson().fromJson(reader, new TypeToken<List<Contain>>() {}.getType());
+
+            // print users
+//            users.forEach(System.out::println);
+            for (Contain user:users
+                 ) {
+                System.out.println(user.toString());
+
+            }
+            // close reader
+            reader.close();
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
 
     }
+   
+
+
+
+
 }
