@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Map;
 
 public class Contain {
@@ -20,5 +21,15 @@ private String[] tags;
         this.likes = likes;
         this.author = author;
         this.tags = tags;
+    }
+
+    @Override
+    public String toString() {
+        return "Contain{" +
+                "text='" + text + '\'' +
+                ", likes='" + likes + '\'' +
+                ", author='" + author + '\'' +
+                ", tags=" + Arrays.toString(tags) +
+                '}';
     }
 }

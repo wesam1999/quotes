@@ -29,7 +29,7 @@ public class App {
 //            users.forEach(System.out::println);
             for (Contain user:users
                  ) {
-                System.out.println(user.toString());
+                System.out.println(user);
 
             }
             // close reader
