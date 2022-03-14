@@ -7,37 +7,72 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.*;
+import java.net.ConnectException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 
 public class App {
 
 
-    public static <JSONObject, JSONArray> void main(String[] args) {
+    public static <JSONObject, JSONArray> void main(String[] args) throws IOException {
+
         try {
-            // create Gson instance
+            URL url=new URL("https://favqs.com/api/qotd");
+            HttpURLConnection httpURLConnection=(HttpURLConnection) url.openConnection();
+            httpURLConnection.setRequestMethod("GET");
+
+            InputStreamReader inputStreamReader=new InputStreamReader(httpURLConnection.getInputStream());
+BufferedReader bufferedReader=new BufferedReader(inputStreamReader);
+String Data=bufferedReader.readLine();
+
             Gson gson = new Gson();
+//            List<data> users = new Gson().fromJson(Data, new TypeToken<List<data>>() {}.getType());
+            data ditto = gson.fromJson(Data, data.class);
+//            List<data> postsList = Arrays.asList(gson.fromJson(Data,data.class));
+            System.out.println(ditto);
 
-            // create a reader
-            Reader reader = Files.newBufferedReader(Paths.get("jsonFile.json"));
+File filedata=new File("./filedata.json");
 
-            // convert JSON array to list of users
-            List<Contain> users = new Gson().fromJson(reader, new TypeToken<List<Contain>>() {}.getType());
+//try (
+        FileWriter fileWriter=new FileWriter(filedata);
+//){
+// System.out.println(ditto.getClass().getName());
+//gson.toJson(ditto,fileWriter);
+        fileWriter.write(Data);       fileWriter.close();
+//}catch (Exception e){
+//    System.out.println(e.toString());
+//}
+//            // create Gson instance
+//            Gson gson = new Gson();
+//
+//            // create a reader
+//            Reader reader = Files.newBufferedReader(Paths.get("jsonFile.json"));
+//
+//            // convert JSON array to list of users
+//            List<Contain> users = new Gson().fromJson(reader, new TypeToken<List<Contain>>() {}.getType());
+//
+//            // print users
+////            users.forEach(System.out::println);
+//            for (Contain user:users) {
+//                System.out.println(user);
+//
+//            }
+//            // close reader
+//            reader.close();
 
-            // print users
-//            users.forEach(System.out::println);
-            for (Contain user:users
-                 ) {
-                System.out.println(user);
-
-            }
-            // close reader
+        } catch (Exception e) {
+            Gson gson = new Gson();
+            Reader reader = Files.newBufferedReader(Paths.get("filedata.json"));
+            data ditto = gson.fromJson(reader, data.class);
+            System.out.println(ditto);
             reader.close();
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
         }
+
 
     }
    
